@@ -5,19 +5,9 @@ with cte as(
     date(to_timestamp(started_at)) as date,
     hour(to_timestamp(started_at)) as hour,
 
-    case when dayname(to_timestamp(started_at)) in ('sat','sun')
-    then 'weekend'
-    else 'weekdays'
-    end as day,
+    {{get_dtype('started_at')}} as day_type,
 
-    case when month(to_timestamp(started_at)) in (12,1,2)
-    then 'winter'
-    when month(to_timestamp(started_at)) in (3,4,5)
-    then 'spring'
-    when month(to_timestamp(started_at)) in (6,7,8)
-    then 'summer'
-    else 'autumn'
-    end as station_of_year
+    {{get_session('started_at')}} as station_of_year
 
     from 
     {{ source('demo', 'bike') }}
