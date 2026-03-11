@@ -1,0 +1,18 @@
+
+{{config(materialized='table')}}
+with cte as(
+    select 
+
+    to_timestamp(started_at) as started_at,
+    date(to_timestamp(started_at)) as date,
+    hour(to_timestamp(started_at)) as hour,
+
+    {{get_dtype('started_at')}} as day_type,
+
+    {{get_session('started_at')}} as station_of_year
+
+    from 
+    {{ ref('stg_bike') }}
+    where started_at!='started_at'
+)
+select * from cte
