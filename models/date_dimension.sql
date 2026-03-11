@@ -12,7 +12,7 @@ with cte as(
     {{get_session('started_at')}} as station_of_year
 
     from 
-    {{ source('demo', 'bike') }}
+    {{ ref('stg_bike') }}
     where started_at!='started_at'
 )
 select * from cte
